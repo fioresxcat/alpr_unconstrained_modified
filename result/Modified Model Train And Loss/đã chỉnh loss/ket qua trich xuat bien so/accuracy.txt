@@ -1,0 +1,17 @@
+1. Bộ test
+Tong so anh: 146
+So bien dai: 97
+So bien dai du doan dung: 95
+So bien vuong: 49
+So bien vuong du doan dung: 49
+Tong so bien du doan dung: 144
+Accuracy: 0.9863013698630136
+
+2. Bộ val
+Tong so anh: 56
+So bien dai: 29
+So bien dai du doan dung: 21
+So bien vuong: 27
+So bien vuong du doan dung: 25
+Tong so bien du doan dung: 46
+Accuracy: 0.8214285714285714

@@ -1,0 +1,19 @@
+Các thông số thể hiện độ chính xác nhận diện biển vuông/ biển dài
+
+1. Bộ test
+Tong so anh: 146
+So bien dai: 97
+So bien dai du doan dung: 55
+So bien vuong: 49
+So bien vuong du doan dung: 12
+Tong so bien du doan dung: 67
+Accuracy: 0.458904
+
+2. Bộ val
+Tong so anh: 46
+So bien dai: 24
+So bien dai du doan dung: 24
+So bien vuong: 22
+So bien vuong du doan dung: 6
+Tong so bien du doan dung: 30
+Accuracy: 0.65217391
