@@ -21,8 +21,8 @@ def l1(true, pred, szs):
 
 
 def loss(Ytrue, Ypred):
-    # Ytrue: M x N x 9
-    # Ypred: M x N x 8
+    # Ytrue: M x N x 10
+    # Ypred: M x N x 10
 
     b = tf.shape(Ytrue)[0]
     h = tf.shape(Ytrue)[1]

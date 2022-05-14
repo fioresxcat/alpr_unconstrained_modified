@@ -153,8 +153,16 @@ def reconstruct(I, Iresized, Yr, lp_threshold):
     one_line = (240,80)
     two_lines = (225,150)
 
+    # Yr (m x n x 10)
     Probs = Yr[..., 0]
-    Affines = Yr[..., 2:]
+    Affines = Yr[..., 2:8]  ### fix
+    long_prob = Yr[..., 8]  ## fix
+    square_prob = Yr[..., 9]  ## fix
+    print(long_prob.shape, square_prob.shape)
+
+    sum_long_prob = 0
+    sum_square_prob = 0
+
 
     xx, yy = np.where(Probs > lp_threshold)
     # CNN input image size
@@ -172,6 +180,8 @@ def reconstruct(I, Iresized, Yr, lp_threshold):
         x, y = xx[i], yy[i]
         affine = Affines[x, y]
         prob = Probs[x, y]
+        sum_long_prob += long_prob[x, y]
+        sum_square_prob += square_prob[x, y]
 
         mn = np.array([float(y) + 0.5, float(x) + 0.5])
 
@@ -179,28 +189,17 @@ def reconstruct(I, Iresized, Yr, lp_threshold):
         A = np.reshape(affine, (2, 3))
         A[0, 0] = max(A[0, 0], 0)
         A[1, 1] = max(A[1, 1], 0)
-        # identity transformation
-        B = np.zeros((2, 3))
-        B[0, 0] = max(A[0, 0], 0)
-        B[1, 1] = max(A[1, 1], 0)
 
         pts = np.array(A*base(vxx, vyy))
-        pts_frontal = np.array(B*base(vxx, vyy))
 
         pts_prop = normal(pts, side, mn, MN)
-        frontal = normal(pts_frontal, side, mn, MN)
 
         labels.append(DLabel(0, pts_prop, prob))
-        labels_frontal.append(DLabel(0, frontal, prob))
 
     final_labels = nms(labels, 0.1)
-    final_labels_frontal = nms(labels_frontal, 0.1)
-
-    print(final_labels_frontal)
 
     # LP size and type
-    out_size, lp_type = (two_lines, 2) if ((final_labels_frontal[0].wh()[
-        0] / final_labels_frontal[0].wh()[1]) < 1.7) else (one_line, 1)
+    out_size, lp_type = (one_line, 1) if sum_long_prob > sum_square_prob else (two_lines, 2)
 
     TLp = []
     if len(final_labels):
@@ -214,6 +213,7 @@ def reconstruct(I, Iresized, Yr, lp_threshold):
             Ilp = cv2.warpPerspective(I, H, out_size, borderValue=0)
             TLp.append(Ilp)
     print(final_labels)
+
     return final_labels, TLp, lp_type
 
 
