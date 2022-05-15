@@ -180,8 +180,8 @@ def reconstruct(I, Iresized, Yr, lp_threshold):
         x, y = xx[i], yy[i]
         affine = Affines[x, y]
         prob = Probs[x, y]
-        sum_long_prob += long_prob[x, y]
-        sum_square_prob += square_prob[x, y]
+        sum_long_prob += long_prob[x, y]  ##fix
+        sum_square_prob += square_prob[x, y]  ##fix
 
         mn = np.array([float(y) + 0.5, float(x) + 0.5])
 
@@ -199,7 +199,7 @@ def reconstruct(I, Iresized, Yr, lp_threshold):
     final_labels = nms(labels, 0.1)
 
     # LP size and type
-    out_size, lp_type = (one_line, 1) if sum_long_prob > sum_square_prob else (two_lines, 2)
+    out_size, lp_type = (one_line, 1) if sum_long_prob > sum_square_prob else (two_lines, 2)  # lp_type cần phải là 1 mảng có đội dài bằng final_labels
 
     TLp = []
     if len(final_labels):
